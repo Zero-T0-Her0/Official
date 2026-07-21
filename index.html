@@ -313,7 +313,7 @@ src="https://www.facebook.com/tr?id=1012446381543825&ev=PageView&noscript=1"
                     <div class="logo">
                         <img id="logo-image" src="logo.jpg" alt="Educational Channel Logo" loading="lazy">
                     </div>
-                    <a id="telegram-link" onclick="customEvent()" class="cta" href="#">Join Free Telegram</a>
+                    <a target="_blank" id="telegram-link" class="cta" href="#"> Join Free Telegram </a>
                     <div class="feature-card">
                         <p class="green"><span class="emoji">✅</span> Discover Elite Financial Education & Trading Basics</p>
                     </div>
@@ -340,10 +340,42 @@ src="https://www.facebook.com/tr?id=1012446381543825&ev=PageView&noscript=1"
         });
     </script>
 
-     <script>
-        function customEvent() {
-            fbq('track', 'Subscribe');
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const btn = document.getElementById("telegram-link");
+
+    if (!btn) return;
+
+    btn.addEventListener("click", function (e) {
+
+        // Allow only real human clicks
+        if (!e.isTrusted) {
+            e.preventDefault();
+            return;
         }
-    </script>
+
+        // Already tracked on this browser?
+        if (localStorage.getItem("telegramTracked") === "true") {
+            return;
+        }
+
+        // Save permanently
+        localStorage.setItem("telegramTracked", "true");
+
+        // Unique Event ID
+        const eventId = "tg_" + Date.now();
+
+        // Meta Pixel Event
+        if (typeof fbq !== "undefined") {
+            fbq("track", "Subscribe", {}, {
+                eventID: eventId
+            });
+        }
+
+    });
+
+});
+</script>
 
 </body></html>
